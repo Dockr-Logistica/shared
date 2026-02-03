@@ -45,6 +45,7 @@ type ButtonAsButton = BaseProps &
 type ButtonAsLink = BaseProps &
   Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'className' | 'href'> & {
     href: string
+    disabled?: boolean
   }
 
 export type TextButtonProps = ButtonAsButton | ButtonAsLink
@@ -88,12 +89,25 @@ const TextButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, TextButtonP
     )
 
     if ('href' in props && props.href) {
-      const { href, ...linkProps } = rest as Omit<ButtonAsLink, keyof BaseProps>
+      const { href, disabled, ...linkProps } = rest as Omit<ButtonAsLink, keyof BaseProps> & { disabled?: boolean }
+      const isDisabled = disabled || loading
+
+      const handleDisabledClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        if (isDisabled) {
+          e.preventDefault()
+          return false
+        }
+      }
+
+      const disabledClasses = isDisabled ? 'pointer-events-none opacity-50 cursor-not-allowed' : ''
+
       return (
         <Link
           ref={ref as React.Ref<HTMLAnchorElement>}
-          href={href}
-          className={classes}
+          href={isDisabled ? '#' : href}
+          className={cn(classes, disabledClasses)}
+          onClick={handleDisabledClick}
+          aria-disabled={isDisabled ? 'true' : undefined}
           {...linkProps}
         >
           {content}

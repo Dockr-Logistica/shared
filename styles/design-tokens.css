@@ -1,0 +1,67 @@
+:root {
+  /* === CORES PRIMÁRIAS === */
+  --color-primary: #FFCE12;
+  --color-primary-hover: #E5B910;
+  --color-primary-light: #FEFCE8;
+
+  /* === CORES DE TEXTO === */
+  --color-text: #262626;
+  --color-text-muted: #6B7280;
+  --color-text-light: #9CA3AF;
+
+  /* === CORES DE STATUS === */
+  --color-success: #0CD54B;
+  --color-error: #D50C16;
+  --color-warning: #F59E0B;
+  --color-info: #1D9AAE;
+
+  /* === CORES DE BACKGROUND === */
+  --color-bg-primary: #FEFCE8;
+  --color-bg-surface: #FFFFFF;
+  --color-bg-muted: #F2F2F2;
+
+  /* === CORES DE BORDA === */
+  --color-border: #ECECEC;
+  --color-border-focus: #FFCE12;
+
+  /* === DIMENSÕES === */
+  --height-button: 40px;
+  --height-input: 47px;
+
+  /* === BORDER RADIUS === */
+  --radius-sm: 4.5px;
+  --radius-md: 7px;
+  --radius-lg: 8px;
+  --radius-xl: 20px;
+
+  /* === ESPAÇAMENTO === */
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 20px;
+  --spacing-lg: 30px;
+  --spacing-xl: 50px;
+
+  /* === SOMBRAS === */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  /* === TRANSIÇÕES === */
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.2s ease-in-out;
+  --transition-slow: 0.3s ease-in-out;
+
+  /* === TIPOGRAFIA === */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 30px;
+
+  /* === LARGURAS MÁXIMAS === */
+  --max-width-card: 1115px;
+  --max-width-content: 1280px;
+}

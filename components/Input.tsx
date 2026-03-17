@@ -2,7 +2,7 @@ import { forwardRef, InputHTMLAttributes, ReactNode, ChangeEvent, useCallback } 
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../utils/cn'
 
-type MaskType = 'cep' | 'phone' | 'cpf' | 'cnpj'
+type MaskType = 'cep' | 'phone' | 'cpf' | 'cnpj' | 'date'
 
 const applyMask = (value: string, mask: MaskType): string => {
   const digits = value.replace(/\D/g, '')
@@ -16,6 +16,8 @@ const applyMask = (value: string, mask: MaskType): string => {
       return digits.slice(0, 11).replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4').replace(/(\d{3})(\d{3})(\d{3})/, '$1.$2.$3').replace(/(\d{3})(\d{3})/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2')
     case 'cnpj':
       return digits.slice(0, 14).replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')
+    case 'date':
+      return digits.slice(0, 8).replace(/(\d{2})(\d{2})(\d{4})/, '$1/$2/$3')
     default:
       return value
   }

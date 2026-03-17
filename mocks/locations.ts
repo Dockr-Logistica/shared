@@ -1,0 +1,42 @@
+import type { Location } from '../types/location'
+
+export const MOCK_SAVED_LOCATIONS: Location[] = [
+  {
+    id: 'loc-001',
+    name: 'Matriz Curitiba',
+    street: 'Rua Marechal Deodoro',
+    number: '630',
+    complement: 'Sala 1201',
+    neighborhood: 'Centro',
+    city: 'Curitiba',
+    state: 'PR',
+    cep: '80010-010',
+    lat: -25.4284,
+    lng: -49.2733,
+  },
+  {
+    id: 'loc-002',
+    name: 'Filial Pinheiro',
+    street: 'Av. Sete de Setembro',
+    number: '4456',
+    neighborhood: 'Batel',
+    city: 'Curitiba',
+    state: 'PR',
+    cep: '80250-210',
+    lat: -25.4412,
+    lng: -49.2867,
+  },
+  {
+    id: 'loc-003',
+    name: 'CD São Paulo',
+    street: 'Rua Augusta',
+    number: '1200',
+    complement: 'Galpão 3',
+    neighborhood: 'Consolação',
+    city: 'São Paulo',
+    state: 'SP',
+    cep: '01304-001',
+    lat: -23.5535,
+    lng: -46.6589,
+  },
+]

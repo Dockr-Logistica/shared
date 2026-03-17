@@ -63,11 +63,39 @@ export type { ProgressBarProps } from './ProgressBar'
 export { TextButton } from './TextButton'
 export type { TextButtonProps } from './TextButton'
 
-export { Logo } from './Logo'
+export { Logo, LogoIcon } from './Logo'
 
 export { default as StepIndicator } from './StepIndicator'
 
-export { default as CargoCard } from './CargoCard'
-export type { CargoData } from './CargoCard'
+export { CargoCard } from './CargoCard'
+export type { CargoCardProps } from './CargoCard'
 
 export { default as RouteCard } from './RouteCard'
+
+export { LocationDropdown } from './LocationDropdown'
+export type { LocationDropdownProps } from './LocationDropdown'
+
+export { LocationDetails } from './LocationDetails'
+export type { LocationDetailsProps } from './LocationDetails'
+
+export { MapPlaceholder } from './MapPlaceholder'
+export type { MapPlaceholderProps } from './MapPlaceholder'
+
+export { NewLocationForm } from './NewLocationForm'
+export type { NewLocationFormProps } from './NewLocationForm'
+
+export { CargoDropdown } from './CargoDropdown'
+export type { CargoDropdownProps } from './CargoDropdown'
+
+export { CargoSummary } from './CargoSummary'
+export type { CargoSummaryProps } from './CargoSummary'
+
+export { NewCargoForm } from './NewCargoForm'
+export type { NewCargoFormProps } from './NewCargoForm'
+
+export { TextArea } from './TextArea'
+export type { TextAreaProps } from './TextArea'
+
+export { MultiSelect } from './MultiSelect'
+export type { MultiSelectProps } from './MultiSelect'
+

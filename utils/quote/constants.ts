@@ -32,7 +32,16 @@ export const brazilianStates = [
   'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO',
 ] as const;
 
+export const additionalServicesOptions = [
+  'Seguro total',
+  'Rastreamento GPS',
+  'Entrega expressa',
+  'Manuseio especial',
+  'Embalagem reforçada',
+] as const;
+
 export type CargoType = typeof cargoTypes[number];
 export type PackagingType = typeof packagingTypes[number];
 export type UrgencyOption = typeof urgencyOptions[number];
 export type BrazilianState = typeof brazilianStates[number];
+export type AdditionalService = typeof additionalServicesOptions[number];

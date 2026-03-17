@@ -103,7 +103,7 @@ const TextButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, TextButtonP
 
       return (
         <Link
-          ref={ref as React.Ref<HTMLAnchorElement>}
+          ref={ref as any}
           href={isDisabled ? '#' : href}
           className={cn(classes, disabledClasses)}
           onClick={handleDisabledClick}
@@ -120,7 +120,7 @@ const TextButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, TextButtonP
 
     return (
       <button
-        ref={ref as React.Ref<HTMLButtonElement>}
+        ref={ref as any}
         disabled={isDisabled}
         className={classes}
         {...buttonProps}

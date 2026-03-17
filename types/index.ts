@@ -45,13 +45,13 @@ export type {
   RegisterData,
   TokenResponse,
   UserResponse,
-} from "@shared/hooks/auth";
+} from "./auth";
 
 export type {
   QuoteCalculationRequest,
   QuoteResponse,
   QuoteCalculationResponse,
-} from "@shared/hooks/quote"
+} from "./quote"
 
 export type { Location } from "./location"
 export { formatLocationLabel, formatLocationShort } from "./location"

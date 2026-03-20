@@ -132,6 +132,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             id={inputId}
             disabled={disabled}
             className={inputClasses}
+            autoComplete="off"
             onChange={handleChange}
             {...props}
           />

@@ -99,3 +99,6 @@ export type { TextAreaProps } from './TextArea'
 export { MultiSelect } from './MultiSelect'
 export type { MultiSelectProps } from './MultiSelect'
 
+export { Alert, alertVariants } from './Alert'
+export type { AlertProps } from './Alert'
+

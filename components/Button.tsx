@@ -17,7 +17,7 @@ const buttonVariants = cva(
         ghost:
           'bg-transparent text-text hover:bg-gray-100 hover:scale-105 active:scale-100 active:bg-gray-200 rounded-button',
         error:
-          'bg-error text-white hover:bg-error-alt hover:scale-105 active:scale-100 shadow-sm rounded-button',
+          'bg-error text-white hover:bg-error-dark hover:scale-105 active:scale-100 shadow-sm rounded-button',
         success:
           'bg-success text-white hover:bg-success-dark hover:scale-105 active:scale-100 shadow-sm rounded-button',
         outlineGray:

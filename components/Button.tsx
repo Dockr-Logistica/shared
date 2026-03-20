@@ -4,24 +4,24 @@ import { cn } from '../utils/cn'
 import { Loader2 } from 'lucide-react'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center font-semibold transition-all cursor-pointer disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
+  'inline-flex items-center justify-center font-semibold transition-all cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
   {
     variants: {
       variant: {
         primary:
-          'bg-primary text-text hover:bg-primary-hover hover:scale-105 active:scale-100 active:bg-primary-dark shadow-sm rounded-button disabled:bg-button-disabled disabled:opacity-100',
+          'bg-primary text-text hover:bg-primary-hover hover:scale-105 active:scale-100 active:bg-primary-dark shadow-sm rounded-button',
         secondary:
-          'bg-text text-white hover:bg-text-light hover:scale-105 active:scale-100 active:bg-text shadow-sm rounded-button disabled:bg-button-disabled disabled:text-text-muted disabled:opacity-100',
+          'bg-text text-white hover:bg-text-light hover:scale-105 active:scale-100 active:bg-text shadow-sm rounded-button',
         outline:
-          'border-2 border-gray-300 text-primary bg-transparent hover:border-text hover:scale-105 active:scale-100 rounded-button-outlined disabled:border-gray-300 disabled:text-text-muted disabled:opacity-100',
+          'border-2 border-gray-300 text-primary bg-transparent hover:border-text hover:scale-105 active:scale-100 rounded-button-outlined disabled:border-gray-300 disabled:text-text-muted',
         ghost:
-          'bg-transparent text-text hover:bg-gray-100 hover:scale-105 active:scale-100 active:bg-gray-200 rounded-button disabled:opacity-50',
+          'bg-transparent text-text hover:bg-gray-100 hover:scale-105 active:scale-100 active:bg-gray-200 rounded-button',
         error:
-          'bg-error text-white hover:bg-error-alt hover:scale-105 active:scale-100 shadow-sm rounded-button disabled:bg-button-disabled disabled:text-text-muted disabled:opacity-100',
+          'bg-error text-white hover:bg-error-alt hover:scale-105 active:scale-100 shadow-sm rounded-button',
         success:
-          'bg-success text-white hover:bg-success-dark hover:scale-105 active:scale-100 shadow-sm rounded-button disabled:bg-button-disabled disabled:text-text-muted disabled:opacity-100',
+          'bg-success text-white hover:bg-success-dark hover:scale-105 active:scale-100 shadow-sm rounded-button',
         outlineGray:
-          'border border-gray-300 text-text bg-transparent hover:border-text hover:scale-105 active:scale-100 rounded-button disabled:border-gray-300 disabled:text-text-muted disabled:opacity-100',
+          'border border-gray-300 text-text bg-transparent hover:border-text hover:scale-105 active:scale-100 rounded-button disabled:border-gray-300 disabled:text-text-muted',
       },
       size: {
         xs: 'h-8 px-3 py-1.5 text-xs gap-1.5',

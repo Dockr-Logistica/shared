@@ -25,9 +25,9 @@ const buttonVariants = cva(
       },
       size: {
         xs: 'h-8 px-3 py-1.5 text-xs gap-1.5',
-        sm: 'h-button-sm px-button-padding-x-sm py-button-padding-y-sm text-sm gap-2',
-        md: 'h-button-md px-button-padding-x-md py-button-padding-y-md text-base gap-3',
-        lg: 'h-button-lg px-button-padding-x-lg py-button-padding-y-lg text-lg gap-3',
+        sm: 'h-10 px-4 py-2 text-sm gap-2',
+        md: 'h-12 px-6 py-3 text-base gap-3',
+        lg: 'h-14 px-8 py-4 text-lg gap-3',
       },
       fullWidth: {
         true: 'w-full',

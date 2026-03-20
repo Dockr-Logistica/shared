@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { cn } from '../utils/cn'
 import { Loader2 } from 'lucide-react'
 
-const baseClasses = 'inline-flex items-center justify-center font-semibold transition-all duration-200 ease-in-out cursor-pointer hover:scale-105 active:scale-100 disabled:hover:scale-100 disabled:pointer-events-none disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2'
+const baseClasses = 'inline-flex items-center justify-center font-semibold transition-all duration-200 ease-in-out cursor-pointer disabled:pointer-events-none disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2'
 
 const variantClasses = {
   primary: 'bg-primary text-text hover:bg-primary-hover active:bg-primary-dark shadow-sm disabled:bg-gray-200 disabled:text-text-muted',

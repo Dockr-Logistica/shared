@@ -9,19 +9,19 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          'bg-primary text-text hover:bg-primary-hover hover:scale-105 active:scale-100 active:bg-primary-dark shadow-sm rounded-button',
+          'bg-primary text-text hover:bg-primary-hover active:bg-primary-dark shadow-sm rounded-button',
         secondary:
-          'bg-text text-white hover:bg-text-light hover:scale-105 active:scale-100 active:bg-text shadow-sm rounded-button',
+          'bg-text text-white hover:bg-text-light active:bg-text shadow-sm rounded-button',
         outline:
-          'border-2 border-gray-300 text-primary bg-transparent hover:border-text hover:scale-105 active:scale-100 rounded-button-outlined disabled:border-gray-300 disabled:text-text-muted',
+          'border-2 border-gray-300 text-primary bg-transparent hover:border-text rounded-button-outlined disabled:border-gray-300 disabled:text-text-muted',
         ghost:
-          'bg-transparent text-text hover:bg-gray-100 hover:scale-105 active:scale-100 active:bg-gray-200 rounded-button',
+          'bg-transparent text-text hover:bg-gray-100 active:bg-gray-200 rounded-button',
         error:
-          'bg-error text-white hover:bg-error-dark hover:scale-105 active:scale-100 shadow-sm rounded-button',
+          'bg-error text-white hover:bg-error-dark shadow-sm rounded-button',
         success:
-          'bg-success text-white hover:bg-success-dark hover:scale-105 active:scale-100 shadow-sm rounded-button',
+          'bg-success text-white hover:bg-success-dark shadow-sm rounded-button',
         outlineGray:
-          'border border-gray-300 text-text bg-transparent hover:border-text hover:scale-105 active:scale-100 rounded-button disabled:border-gray-300 disabled:text-text-muted',
+          'border border-gray-300 text-text bg-transparent hover:border-text rounded-button disabled:border-gray-300 disabled:text-text-muted',
       },
       size: {
         xs: 'h-8 px-3 py-1.5 text-xs gap-1.5',

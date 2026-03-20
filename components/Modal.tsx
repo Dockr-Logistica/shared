@@ -6,19 +6,19 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../utils/cn'
 
 const modalBackdropVariants = cva(
-  'fixed inset-0 z-40 bg-gray-900 bg-opacity-50 transition-opacity duration-200'
+  'fixed inset-0 z-40 bg-gray-900/50 transition-opacity duration-200'
 )
 
 const modalContentVariants = cva(
-  'relative z-50 inline-block align-bottom bg-white rounded-card text-left overflow-hidden shadow-xl transform transition-all duration-200 sm:my-8 sm:align-middle sm:w-full',
+  'relative bg-white rounded-card text-left overflow-hidden shadow-xl transform transition-all duration-200 w-full',
   {
     variants: {
       size: {
-        sm: 'sm:max-w-sm',
-        md: 'sm:max-w-md',
-        lg: 'sm:max-w-lg',
-        xl: 'sm:max-w-xl',
-        full: 'sm:max-w-full sm:m-4',
+        sm: 'max-w-sm',
+        md: 'max-w-md',
+        lg: 'max-w-lg',
+        xl: 'max-w-xl',
+        full: 'max-w-full m-4',
       },
     },
     defaultVariants: {
@@ -95,7 +95,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 
     return (
       <div className="fixed inset-0 z-50 overflow-y-auto">
-        <div className="flex items-center justify-center min-h-screen px-4 py-6">
+        <div className="flex min-h-full items-center justify-center p-4">
           <div
             className={modalBackdropVariants()}
             onClick={closeOnOverlay ? onClose : undefined}

@@ -10,10 +10,10 @@ const alertVariants = cva(
   {
     variants: {
       variant: {
-        error: 'bg-red-50 border-error text-error',
-        warning: 'bg-amber-50 border-amber-500 text-amber-700',
-        success: 'bg-green-50 border-green-500 text-green-700',
-        info: 'bg-blue-50 border-blue-500 text-blue-700',
+        error: 'bg-error-light border-error text-error-dark',
+        warning: 'bg-warning-light border-warning text-warning-dark',
+        success: 'bg-success-light border-success text-success-dark',
+        info: 'bg-info-light border-info text-info-dark',
       },
     },
     defaultVariants: {

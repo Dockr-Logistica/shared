@@ -14,15 +14,6 @@ export type {
 } from "./warehouse";
 
 export type {
-  LineStringCoordinates,
-  PolygonCoordinates,
-  RouteBase,
-  RouteCreate,
-  RouteUpdate,
-  RouteResponse,
-} from "./route";
-
-export {
   type UserBase,
   type UserCreate,
   type UserUpdate,

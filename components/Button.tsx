@@ -22,12 +22,15 @@ const buttonVariants = cva(
           'bg-success text-white hover:bg-success-dark shadow-sm rounded-button',
         outlineGray:
           'border border-gray-300 text-text bg-transparent hover:border-text rounded-button disabled:border-gray-300 disabled:text-text-muted',
+        fieldAction:
+          'border border-input-border-default bg-white text-text hover:border-input-border-hover hover:bg-bg-hover rounded-input shadow-none disabled:border-input-border-default disabled:bg-input-background-disabled',
       },
       size: {
         xs: 'h-8 px-3 py-1.5 text-xs gap-1.5',
         sm: 'h-10 px-4 py-2 text-sm gap-2',
         md: 'h-12 px-6 py-3 text-base gap-3',
         lg: 'h-14 px-8 py-4 text-lg gap-3',
+        field: 'h-input-md px-4 py-2 text-sm gap-2',
       },
       fullWidth: {
         true: 'w-full',

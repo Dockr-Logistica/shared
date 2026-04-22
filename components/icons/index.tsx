@@ -93,12 +93,15 @@ export function ChartIcon({ className }: { className?: string }) {
   );
 }
 
-export function WorkflowIcon({ className }: { className?: string }) {
+export function RoutesIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 36 40" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M-2 4V24.4C-2 27.7603 -2 29.4405 -1.346 30.7239C-0.7708 31.8529 0.1471 32.7708 1.2761 33.346C2.5595 34 4.2397 34 7.6 34H22M22 34C22 37.3137 24.6863 40 28 40C31.3137 40 34 37.3137 34 34C34 30.6863 31.3137 28 28 28C24.6863 28 22 30.6863 22 34ZM-2 14L22 14M22 14C22 17.3137 24.6863 20 28 20C31.3137 20 34 17.3137 34 14C34 10.6863 31.3137 8 28 8C24.6863 8 22 10.6863 22 14Z" />
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="6" cy="7" r="2.5" />
+      <circle cx="18" cy="17" r="2.5" />
+      <path d="M8.5 7H12C14.76 7 17 9.24 17 12V14.5" />
+      <path d="M9 17H15.5" />
     </svg>
-  );
+  )
 }
 
 export function UsersIcon({ className }: { className?: string }) {
@@ -122,6 +125,17 @@ export function BuildingIcon({ className }: { className?: string }) {
       <path d="M10 10h4" />
       <path d="M10 14h4" />
       <path d="M10 18h4" />
+    </svg>
+  )
+}
+
+export function LocationPinIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35Z" />
+      <path d="M6 18h12" />
+      <path d="M6 14h12" />
+      <rect x="9" y="18" width="6" height="4" rx="1" />
     </svg>
   )
 }

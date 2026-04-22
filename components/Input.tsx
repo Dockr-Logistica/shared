@@ -63,6 +63,7 @@ export interface InputProps
   error?: string
   icon?: ReactNode
   iconPosition?: 'left' | 'right'
+  suffix?: string
   mask?: MaskType
 }
 
@@ -75,6 +76,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       error,
       icon,
       iconPosition = 'left',
+      suffix,
       variant,
       size,
       className,
@@ -94,7 +96,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         variant: computedVariant,
         size,
         hasIconLeft: Boolean(icon && iconPosition === 'left'),
-        hasIconRight: Boolean(icon && iconPosition === 'right'),
+        hasIconRight: Boolean(suffix || (icon && iconPosition === 'right')),
       }),
       disabled && 'bg-input-background-disabled cursor-not-allowed',
       className
@@ -137,10 +139,16 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
 
-          {icon && iconPosition === 'right' && (
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted">
-              {icon}
-            </div>
+          {suffix ? (
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400 pointer-events-none">
+              {suffix}
+            </span>
+          ) : (
+            icon && iconPosition === 'right' && (
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted">
+                {icon}
+              </div>
+            )
           )}
         </div>
 

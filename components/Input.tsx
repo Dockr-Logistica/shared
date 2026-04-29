@@ -1,4 +1,4 @@
-import { forwardRef, InputHTMLAttributes, ReactNode, ChangeEvent, useCallback } from 'react'
+import { forwardRef, InputHTMLAttributes, ReactNode, ChangeEvent, useCallback, useId } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../utils/cn'
 
@@ -83,13 +83,17 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       disabled,
       mask,
       onChange,
+      'aria-describedby': ariaDescribedBy,
       ...props
     },
     ref
   ) => {
-    const inputId = props.id || props.name
+    const generatedId = useId()
+    const inputId = props.id || props.name || `input-${generatedId}`
     const hasError = Boolean(error)
     const computedVariant = hasError ? 'error' : variant
+    const messageId = error || helperText ? `${inputId}-message` : undefined
+    const describedBy = [ariaDescribedBy, messageId].filter(Boolean).join(' ') || undefined
 
     const inputClasses = cn(
       inputVariants({
@@ -133,6 +137,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             id={inputId}
             disabled={disabled}
+            aria-invalid={hasError || undefined}
+            aria-describedby={describedBy}
             className={inputClasses}
             autoComplete="off"
             onChange={handleChange}
@@ -154,10 +160,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
         {(error || helperText) && (
           <p
+            id={messageId}
             className={cn('text-sm mt-1.5', {
               'text-error': error,
               'text-text-muted': !error && helperText,
             })}
+            role={error ? 'alert' : undefined}
           >
             {error || helperText}
           </p>

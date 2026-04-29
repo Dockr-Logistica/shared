@@ -1,4 +1,4 @@
-import { forwardRef, ButtonHTMLAttributes, AnchorHTMLAttributes, ReactNode } from 'react'
+import { forwardRef, ButtonHTMLAttributes, AnchorHTMLAttributes, ReactNode, type Ref } from 'react'
 import Link from 'next/link'
 import { cn } from '../utils/cn'
 import { Loader2 } from 'lucide-react'
@@ -103,7 +103,7 @@ const TextButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, TextButtonP
 
       return (
         <Link
-          ref={ref as any}
+          ref={ref as Ref<HTMLAnchorElement>}
           href={isDisabled ? '#' : href}
           className={cn(classes, disabledClasses)}
           onClick={handleDisabledClick}
@@ -120,7 +120,7 @@ const TextButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, TextButtonP
 
     return (
       <button
-        ref={ref as any}
+        ref={ref as Ref<HTMLButtonElement>}
         disabled={isDisabled}
         className={classes}
         {...buttonProps}

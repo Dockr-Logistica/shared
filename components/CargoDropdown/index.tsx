@@ -1,11 +1,12 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useId, type KeyboardEvent } from 'react'
 import { ChevronDown } from 'lucide-react'
 import type { Cargo, SelectedCargo } from '../../types/cargo'
 import { formatCargoLabel } from '../../types/cargo'
 import { formatCurrency, formatWeight } from '../../utils/quote/formatters'
 import { TextButton } from '../TextButton'
+import { FloatingDropdown } from '../FloatingDropdown'
 
 export interface CargoDropdownProps {
   cargos: Cargo[]
@@ -41,13 +42,17 @@ export function CargoDropdown({
   additionalOptionClasses = '',
 }: CargoDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const dropdownId = useId()
+  const labelId = useId()
   const containerRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
-      }
+      const target = event.target as Node
+      if (containerRef.current?.contains(target) || dropdownRef.current?.contains(target)) return
+      setIsOpen(false)
     }
 
     if (isOpen) {
@@ -73,95 +78,150 @@ export function CargoDropdown({
     }
   }
 
+  function closeDropdown(restoreFocus = false) {
+    setIsOpen(false)
+    if (restoreFocus) {
+      window.setTimeout(() => triggerRef.current?.focus(), 0)
+    }
+  }
+
+  function focusOption(index: number) {
+    const option = dropdownRef.current?.querySelector<HTMLButtonElement>(
+      `[data-cargo-dropdown-option="${index}"]`,
+    )
+    option?.focus()
+  }
+
+  function handleTriggerKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      setIsOpen(true)
+      window.setTimeout(() => focusOption(0), 0)
+      return
+    }
+
+    if (event.key === 'Escape' && isOpen) {
+      event.preventDefault()
+      event.stopPropagation()
+      closeDropdown(true)
+    }
+  }
+
+  function handleOptionKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      event.stopPropagation()
+      closeDropdown(true)
+      return
+    }
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      focusOption(Math.min(index + 1, availableCargos.length - 1))
+      return
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault()
+      if (index === 0) {
+        triggerRef.current?.focus()
+      } else {
+        focusOption(index - 1)
+      }
+    }
+  }
+
   return (
     <div className={`relative ${additionalContainerClasses}`} ref={containerRef}>
       <div className="mb-2">
-        <label className="text-sm font-semibold text-gray-900">{label}</label>
-        {sublabel && <p className="text-xs text-gray-500 mt-0.5">{sublabel}</p>}
+        <label id={labelId} className="text-sm font-medium text-text">{label}</label>
+        {sublabel && <p className="text-xs text-text-secondary mt-0.5">{sublabel}</p>}
       </div>
 
       <button
+        ref={triggerRef}
         type="button"
         onClick={handleToggle}
+        onKeyDown={handleTriggerKeyDown}
         disabled={disabled}
         className={`
-          w-full h-[47px] px-4
+          w-full h-input-md px-4
           flex items-center justify-between
           bg-white
-          border rounded-[7px]
+          border rounded-input
           transition-all duration-200 ease-in-out
-          ${error ? 'border-red-500' : 'border-[#ECECEC] hover:border-[#B3B3B3] focus:border-[#262626]'}
+          ${error ? 'border-error' : 'border-input-border-default hover:border-input-border-hover focus:border-input-border-focus'}
           ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-          ${isOpen ? 'border-[#262626]' : ''}
+          ${isOpen ? 'border-input-border-focus' : ''}
           ${additionalDropdownClasses}
         `}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
+        aria-controls={isOpen ? dropdownId : undefined}
+        aria-labelledby={labelId}
       >
-        <span className="text-gray-400 text-sm">{placeholder}</span>
+        <span className="text-text-placeholder text-sm">{placeholder}</span>
         <ChevronDown
-          className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-5 h-5 text-text-secondary transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
 
-      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
+      {error && <p className="text-xs text-error mt-1">{error}</p>}
 
-      {isOpen && (
-        <div
-          className={`
-            absolute z-50 mt-1 w-full
-            bg-white
-            border border-[#ECECEC]
-            rounded-lg
-            shadow-lg
-            max-h-[240px]
-            overflow-y-auto
-            transition-all duration-200 ease-in-out
-          `}
-          role="listbox"
-        >
+      <FloatingDropdown
+        open={isOpen}
+        anchorRef={triggerRef}
+        floatingRef={dropdownRef}
+        id={dropdownId}
+        role="listbox"
+        positionOptions={{ preferredMaxHeight: 240, minHeight: 96 }}
+        className="transition-all duration-200 ease-in-out"
+      >
           {availableCargos.length > 0 ? (
-            availableCargos.map((cargo) => (
+            availableCargos.map((cargo, index) => (
               <button
                 key={cargo.id}
                 type="button"
                 onClick={() => handleSelect(cargo)}
+                onKeyDown={(event) => handleOptionKeyDown(event, index)}
+                data-cargo-dropdown-option={index}
                 className={`
                   w-full px-4 py-3
                   text-left
-                  hover:bg-gray-50
+                  hover:bg-bg-hover
+                  focus:bg-bg-hover focus:outline-none
                   transition-colors duration-150
                   cursor-pointer
-                  border-b border-gray-100 last:border-b-0
+                  border-b border-border last:border-b-0
                   ${additionalOptionClasses}
                 `}
                 role="option"
+                aria-selected={false}
               >
-                <div className="text-sm text-gray-900 font-medium truncate">
+                <div className="text-sm text-text font-medium truncate">
                   {formatCargoLabel(cargo)}
                 </div>
-                <div className="text-xs text-gray-500 mt-1">
+                <div className="text-xs text-text-secondary mt-1">
                   {formatWeight(cargo.weight)} | {formatCurrency(cargo.value)}
                 </div>
               </button>
             ))
           ) : (
             <div className="px-4 py-6 text-center">
-              <p className="text-sm text-gray-600 mb-2">{emptyMessage}</p>
+              <p className="text-sm text-text-secondary mb-2">{emptyMessage}</p>
               <button
                 type="button"
                 onClick={() => {
                   setIsOpen(false)
                   onNewCargo()
                 }}
-                className="text-sm text-[#FFCE12] hover:underline"
+                className="text-sm text-primary hover:underline"
               >
                 {emptyActionText}
               </button>
             </div>
           )}
-        </div>
-      )}
+      </FloatingDropdown>
 
       <div className="mt-3">
         <TextButton

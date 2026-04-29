@@ -18,24 +18,6 @@ function isValidCNPJ(cnpj: string): boolean {
   return parseInt(cleaned[13]) === digit;
 }
 
-function isValidCPF(cpf: string): boolean {
-  const cleaned = cpf.replace(/\D/g, '');
-  if (cleaned.length !== 11) return false;
-  if (/^(\d)\1+$/.test(cleaned)) return false;
-
-  let sum = 0;
-  for (let i = 0; i < 9; i++) sum += parseInt(cleaned[i]) * (10 - i);
-  let digit = (sum * 10) % 11;
-  if (digit === 10) digit = 0;
-  if (parseInt(cleaned[9]) !== digit) return false;
-
-  sum = 0;
-  for (let i = 0; i < 10; i++) sum += parseInt(cleaned[i]) * (11 - i);
-  digit = (sum * 10) % 11;
-  if (digit === 10) digit = 0;
-  return parseInt(cleaned[10]) === digit;
-}
-
 export const step1Schema = z.object({
   accountType: z.enum(['shipper', 'carrier'], {
     required_error: 'Selecione o tipo de conta',

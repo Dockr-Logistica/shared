@@ -63,18 +63,6 @@ const initialShipmentStepData: ShipmentStepData = {
   observations: '',
 }
 
-const initialShipmentData: ShipmentData = {
-  pickupDate: '',
-  deliveryDate: '',
-  urgency: '',
-  contact: {
-    name: '',
-    phone: '',
-    email: '',
-  },
-  notes: '',
-}
-
 const initialQuoteFormDraft: QuoteFormDraft = {
   route: initialRouteStepData,
   cargo: initialCargoStepData,

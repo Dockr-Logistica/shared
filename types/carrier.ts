@@ -6,7 +6,7 @@ export interface CarrierBase {
   active: boolean;
 }
 
-export interface CarrierCreate extends CarrierBase {}
+export type CarrierCreate = CarrierBase
 
 export interface CarrierUpdate {
   name?: string;

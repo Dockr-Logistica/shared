@@ -33,6 +33,7 @@ export type { AvatarProps } from './Avatar'
 
 export {
   Modal,
+  ModalShell,
   ModalFooter,
   modalBackdropVariants,
   modalContentVariants,
@@ -40,9 +41,10 @@ export {
   modalHeaderVariants,
   modalTitleVariants,
   modalDescriptionVariants,
+  modalBodyVariants,
   modalFooterVariants,
 } from './Modal'
-export type { ModalProps, ModalFooterProps } from './Modal'
+export type { ModalProps, ModalShellProps, ModalFooterProps } from './Modal'
 
 export { Skeleton, skeletonVariants } from './Skeleton'
 export type { SkeletonProps } from './Skeleton'
@@ -51,6 +53,15 @@ export { Toggle, toggleVariants, toggleThumbVariants } from './Toggle'
 export type { ToggleProps } from './Toggle'
 
 export { DataTable } from './DataTable'
+
+export {
+  FloatingDropdown,
+  getFloatingDropdownPosition,
+} from './FloatingDropdown'
+export type {
+  FloatingDropdownOptions,
+  FloatingDropdownPosition,
+} from './FloatingDropdown'
 
 export {
   ProgressBar,
@@ -101,4 +112,3 @@ export type { MultiSelectProps } from './MultiSelect'
 
 export { Alert, alertVariants } from './Alert'
 export type { AlertProps } from './Alert'
-

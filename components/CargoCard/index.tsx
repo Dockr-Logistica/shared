@@ -55,6 +55,7 @@ export function CargoCard({
           {/* Thumbnail */}
           <div className="w-20 h-20 flex-shrink-0 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden">
             {cargo.image ? (
+              // eslint-disable-next-line @next/next/no-img-element -- Cargo thumbnails may come from local uploads or signed URLs outside Next image optimization.
               <img
                 src={cargo.image}
                 alt={cargo.name}

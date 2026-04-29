@@ -1,8 +1,15 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+} from 'react'
 import { Check, ChevronDown } from 'lucide-react'
 import { cn } from '../utils/cn'
+import { FloatingDropdown } from './FloatingDropdown'
 
 export interface MultiSelectProps {
   options: string[]
@@ -30,13 +37,20 @@ export function MultiSelect({
   additionalDropdownClasses = '',
 }: MultiSelectProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const dropdownId = useId()
+  const labelId = useId()
   const containerRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
+      const target = event.target as Node
+      if (containerRef.current?.contains(target) || dropdownRef.current?.contains(target)) {
+        return
       }
+
+        setIsOpen(false)
     }
 
     if (isOpen) {
@@ -54,11 +68,64 @@ export function MultiSelect({
     }
   }
 
+  function closeDropdown(restoreFocus = false) {
+    setIsOpen(false)
+    if (restoreFocus) {
+      window.setTimeout(() => triggerRef.current?.focus(), 0)
+    }
+  }
+
   const handleSelectOption = (option: string) => {
     if (value.includes(option)) {
       onChange(value.filter((v) => v !== option))
     } else {
       onChange([...value, option])
+    }
+  }
+
+  function focusOption(index: number) {
+    const option = dropdownRef.current?.querySelector<HTMLButtonElement>(
+      `[data-multiselect-option="${index}"]`,
+    )
+    option?.focus()
+  }
+
+  function handleTriggerKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      setIsOpen(true)
+      window.setTimeout(() => focusOption(0), 0)
+      return
+    }
+
+    if (event.key === 'Escape' && isOpen) {
+      event.preventDefault()
+      event.stopPropagation()
+      closeDropdown(true)
+    }
+  }
+
+  function handleOptionKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      event.stopPropagation()
+      closeDropdown(true)
+      return
+    }
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      focusOption(Math.min(index + 1, options.length - 1))
+      return
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault()
+      if (index === 0) {
+        triggerRef.current?.focus()
+      } else {
+        focusOption(index - 1)
+      }
     }
   }
 
@@ -72,74 +139,85 @@ export function MultiSelect({
     <div className={cn('relative', additionalContainerClasses)} ref={containerRef}>
       {label && (
         <div className="mb-2">
-          <label className="text-sm font-semibold text-gray-900">{label}</label>
-          {sublabel && <p className="text-xs text-gray-500 mt-0.5">{sublabel}</p>}
+          <label id={labelId} className="text-sm font-medium text-text">{label}</label>
+          {sublabel && <p className="text-xs text-text-secondary mt-0.5">{sublabel}</p>}
         </div>
       )}
 
       <button
+        ref={triggerRef}
         type="button"
         onClick={handleToggle}
+        onKeyDown={handleTriggerKeyDown}
         disabled={disabled}
         className={cn(
-          'w-full h-[47px] px-4',
+          'w-full h-input-md px-4',
           'flex items-center justify-between',
           'bg-white',
-          'border rounded-[7px]',
+          'border rounded-input',
           'transition-all duration-200 ease-in-out',
-          error ? 'border-red-500' : 'border-[#ECECEC] hover:border-[#B3B3B3] focus:border-[#262626]',
+          error ? 'border-error' : 'border-input-border-default hover:border-input-border-hover focus:border-input-border-focus',
           disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
-          isOpen ? 'border-[#262626]' : '',
+          isOpen ? 'border-input-border-focus' : '',
           additionalDropdownClasses
         )}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
+        aria-controls={isOpen ? dropdownId : undefined}
+        aria-labelledby={label ? labelId : undefined}
+        aria-label={label ? undefined : placeholder}
       >
-        <span className={value.length === 0 ? 'text-gray-400 text-sm' : 'text-gray-900 text-sm'}>
+        <span className={value.length === 0 ? 'text-text-placeholder text-sm' : 'text-text text-sm'}>
           {displayText}
         </span>
         <ChevronDown
           className={cn(
-            'w-5 h-5 text-gray-500 transition-transform duration-200',
+            'w-5 h-5 text-text-muted transition-transform duration-200',
             isOpen && 'rotate-180'
           )}
         />
       </button>
 
-      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
+      {error && <p className="text-xs text-error mt-1" role="alert">{error}</p>}
 
-      {isOpen && (
-        <div
-          className="absolute z-50 mt-1 w-full bg-white border border-[#ECECEC] rounded-lg shadow-lg max-h-[240px] overflow-y-auto transition-all duration-200"
-          role="listbox"
-          aria-multiselectable="true"
-        >
-          {options.map((option) => {
+      <FloatingDropdown
+        open={isOpen}
+        anchorRef={triggerRef}
+        floatingRef={dropdownRef}
+        id={dropdownId}
+        role="listbox"
+        aria-multiselectable="true"
+        positionOptions={{ preferredMaxHeight: 240, minHeight: 96 }}
+        className="transition-all duration-200"
+      >
+          {options.map((option, index) => {
             const isSelected = value.includes(option)
             return (
               <button
                 key={option}
                 type="button"
                 onClick={() => handleSelectOption(option)}
+                onKeyDown={(event) => handleOptionKeyDown(event, index)}
+                data-multiselect-option={index}
                 className={cn(
                   'w-full px-4 py-3',
                   'flex items-center justify-between',
                   'text-left text-sm',
-                  'hover:bg-gray-50',
+                  'hover:bg-bg-hover',
+                  'focus:bg-bg-hover focus:outline-none',
                   'transition-colors duration-150',
-                  'border-b border-gray-100 last:border-b-0',
-                  isSelected ? 'text-gray-900 font-medium' : 'text-gray-700'
+                  'border-b border-border last:border-b-0',
+                  isSelected ? 'text-text font-medium' : 'text-text-secondary'
                 )}
                 role="option"
                 aria-selected={isSelected}
               >
                 <span>{option}</span>
-                {isSelected && <Check className="w-4 h-4 text-[#FFCE12]" />}
+                {isSelected && <Check className="w-4 h-4 text-primary" />}
               </button>
             )
           })}
-        </div>
-      )}
+      </FloatingDropdown>
     </div>
   )
 }

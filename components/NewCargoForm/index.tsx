@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Modal, ModalFooter } from '../Modal'
 import { Input } from '../Input'
 import { Button } from '../Button'
@@ -32,19 +32,13 @@ export function NewCargoForm({
     value: '',
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
-  const [calculatedVolume, setCalculatedVolume] = useState(0)
-
-  useEffect(() => {
-    const length = parseFloat(formData.length)
-    const width = parseFloat(formData.width)
-    const height = parseFloat(formData.height)
-
-    if (!isNaN(length) && !isNaN(width) && !isNaN(height) && length > 0 && width > 0 && height > 0) {
-      setCalculatedVolume(calculateVolume(length, width, height))
-    } else {
-      setCalculatedVolume(0)
-    }
-  }, [formData.length, formData.width, formData.height])
+  const length = parseFloat(formData.length)
+  const width = parseFloat(formData.width)
+  const height = parseFloat(formData.height)
+  const calculatedVolume =
+    !Number.isNaN(length) && !Number.isNaN(width) && !Number.isNaN(height) && length > 0 && width > 0 && height > 0
+      ? calculateVolume(length, width, height)
+      : 0
 
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -88,7 +82,6 @@ export function NewCargoForm({
       weight: '',
       value: '',
     })
-    setCalculatedVolume(0)
   }
 
   const handleCancel = () => {
@@ -102,7 +95,6 @@ export function NewCargoForm({
       weight: '',
       value: '',
     })
-    setCalculatedVolume(0)
   }
 
   return (
@@ -124,7 +116,7 @@ export function NewCargoForm({
           <p className="text-xs text-gray-400 mt-1">(Funcionalidade em desenvolvimento)</p>
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <Input
             label="Comprimento (m)"
             type="number"
@@ -164,7 +156,7 @@ export function NewCargoForm({
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Input
             label="Peso (kg)"
             type="number"

@@ -20,7 +20,7 @@ export interface WarehouseBase {
   active: boolean;
 }
 
-export interface WarehouseCreate extends WarehouseBase {}
+export type WarehouseCreate = WarehouseBase
 
 export interface WarehouseUpdate {
   name?: string;

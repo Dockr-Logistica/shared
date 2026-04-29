@@ -1,20 +1,20 @@
-import { forwardRef, SelectHTMLAttributes } from 'react'
+import { forwardRef, SelectHTMLAttributes, useId } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../utils/cn'
 import { ChevronDown } from 'lucide-react'
 
 const selectVariants = cva(
-  'w-full px-4 pr-10 border rounded-[7px] appearance-none transition-all duration-200 text-[#262626] bg-white focus:outline-none focus:ring-0',
+  'w-full px-4 pr-10 border rounded-input appearance-none transition-all duration-200 text-text bg-white focus:outline-none focus:ring-0',
   {
     variants: {
       variant: {
-        default: 'border-[#ECECEC] hover:border-[#B3B3B3] focus:border-[#262626]',
+        default: 'border-input-border-default hover:border-input-border-hover focus:border-input-border-focus',
         error: 'border-error hover:border-error focus:border-error',
       },
       size: {
-        sm: 'h-[40px] text-sm',
-        md: 'h-[47px] text-base',
-        lg: 'h-[52px] text-lg',
+        sm: 'h-input-sm text-sm',
+        md: 'h-input-md text-base',
+        lg: 'h-input-lg text-lg',
       },
     },
     defaultVariants: {
@@ -50,13 +50,17 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
       size,
       className,
       disabled,
+      'aria-describedby': ariaDescribedBy,
       ...props
     },
     ref
   ) => {
-    const selectId = props.id || props.name
+    const generatedId = useId()
+    const selectId = props.id || props.name || `select-${generatedId}`
     const hasError = Boolean(error)
     const computedVariant = hasError ? 'error' : 'default'
+    const messageId = error || helperText ? `${selectId}-message` : undefined
+    const describedBy = [ariaDescribedBy, messageId].filter(Boolean).join(' ') || undefined
 
     return (
       <div className="w-full">
@@ -75,14 +79,14 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             ref={ref}
             id={selectId}
             disabled={disabled}
-            aria-invalid={hasError}
-            aria-describedby={error ? `${selectId}-error` : undefined}
+            aria-invalid={hasError || undefined}
+            aria-describedby={describedBy}
             className={cn(
               selectVariants({
                 variant: computedVariant,
                 size,
               }),
-              disabled && 'bg-gray-100 cursor-not-allowed opacity-60',
+              disabled && 'bg-input-background-disabled cursor-not-allowed opacity-60',
               className
             )}
             {...props}
@@ -107,7 +111,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
 
         {(error || helperText) && (
           <p
-            id={error ? `${selectId}-error` : undefined}
+            id={messageId}
             className={cn('text-sm mt-1.5', {
               'text-error': error,
               'text-text-muted': !error && helperText,

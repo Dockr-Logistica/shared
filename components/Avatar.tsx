@@ -102,6 +102,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
         {...props}
       >
         {src ? (
+          // eslint-disable-next-line @next/next/no-img-element -- Avatar sources may be user-uploaded or blob URLs that should bypass Next image optimization.
           <img
             src={src}
             alt={alt}

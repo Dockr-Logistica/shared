@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useId, type KeyboardEvent } from 'react'
 import { ChevronDown } from 'lucide-react'
 import type { Location } from '../../types/location'
 import { formatLocationLabel } from '../../types/location'
 import { TextButton } from '../TextButton'
+import { FloatingDropdown } from '../FloatingDropdown'
 
 export interface LocationDropdownProps {
   locations: Location[]
@@ -40,16 +41,17 @@ export function LocationDropdown({
   additionalOptionClasses = '',
 }: LocationDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const dropdownId = useId()
+  const labelId = useId()
   const containerRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false)
-      }
+      const target = event.target as Node
+      if (containerRef.current?.contains(target) || dropdownRef.current?.contains(target)) return
+      setIsOpen(false)
     }
 
     if (isOpen) {
@@ -72,42 +74,99 @@ export function LocationDropdown({
     }
   }
 
+  function closeDropdown(restoreFocus = false) {
+    setIsOpen(false)
+    if (restoreFocus) {
+      window.setTimeout(() => triggerRef.current?.focus(), 0)
+    }
+  }
+
+  function focusOption(index: number) {
+    const option = dropdownRef.current?.querySelector<HTMLButtonElement>(
+      `[data-location-dropdown-option="${index}"]`,
+    )
+    option?.focus()
+  }
+
+  function handleTriggerKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      setIsOpen(true)
+      window.setTimeout(() => focusOption(0), 0)
+      return
+    }
+
+    if (event.key === 'Escape' && isOpen) {
+      event.preventDefault()
+      event.stopPropagation()
+      closeDropdown(true)
+    }
+  }
+
+  function handleOptionKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      event.stopPropagation()
+      closeDropdown(true)
+      return
+    }
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      focusOption(Math.min(index + 1, locations.length - 1))
+      return
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault()
+      if (index === 0) {
+        triggerRef.current?.focus()
+      } else {
+        focusOption(index - 1)
+      }
+    }
+  }
+
   return (
     <div className={`relative ${additionalContainerClasses}`} ref={containerRef}>
       <div className="mb-2">
-        <label className="text-sm font-semibold text-gray-900">{label}</label>
+        <label id={labelId} className="text-sm font-medium text-text">{label}</label>
         {sublabel && (
-          <p className="text-xs text-gray-500 mt-0.5">{sublabel}</p>
+          <p className="text-xs text-text-secondary mt-0.5">{sublabel}</p>
         )}
       </div>
 
       <button
+        ref={triggerRef}
         type="button"
         onClick={handleToggle}
+        onKeyDown={handleTriggerKeyDown}
         disabled={disabled}
         className={`
-          w-full h-[47px] px-4
+          w-full h-input-md px-4
           flex items-center justify-between
           bg-white
-          border rounded-[7px]
+          border rounded-input
           transition-all duration-200 ease-in-out
           ${
             error
-              ? 'border-red-500'
-              : 'border-[#ECECEC] hover:border-[#B3B3B3] focus:border-[#262626]'
+              ? 'border-error'
+              : 'border-input-border-default hover:border-input-border-hover focus:border-input-border-focus'
           }
           ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-          ${isOpen ? 'border-[#262626]' : ''}
+          ${isOpen ? 'border-input-border-focus' : ''}
           ${additionalDropdownClasses}
         `}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
+        aria-controls={isOpen ? dropdownId : undefined}
+        aria-labelledby={labelId}
       >
         <span
           className={
             selectedLocation
-              ? 'text-gray-900 text-sm'
-              : 'text-gray-400 text-sm'
+              ? 'text-text text-sm'
+              : 'text-text-placeholder text-sm'
           }
         >
           {selectedLocation
@@ -115,43 +174,41 @@ export function LocationDropdown({
             : placeholder}
         </span>
         <ChevronDown
-          className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+          className={`w-5 h-5 text-text-secondary transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
           }`}
         />
       </button>
 
-      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
+      {error && <p className="text-xs text-error mt-1">{error}</p>}
 
-      {isOpen && (
-        <div
-          className={`
-            absolute z-50 mt-1 w-full
-            bg-white
-            border border-[#ECECEC]
-            rounded-lg
-            shadow-lg
-            max-h-[240px]
-            overflow-y-auto
-            transition-all duration-200 ease-in-out
-          `}
-          role="listbox"
-        >
+      <FloatingDropdown
+        open={isOpen}
+        anchorRef={triggerRef}
+        floatingRef={dropdownRef}
+        id={dropdownId}
+        role="listbox"
+        positionOptions={{ preferredMaxHeight: 240, minHeight: 96 }}
+        className="transition-all duration-200 ease-in-out"
+      >
           {locations.length > 0 ? (
-            locations.map((location) => (
+            locations.map((location, index) => (
               <button
                 key={location.id}
                 type="button"
                 onClick={() => handleSelect(location)}
+                onKeyDown={(event) => handleOptionKeyDown(event, index)}
+                data-location-dropdown-option={index}
                 className={`
                   w-full px-4 py-3
-                  text-left text-sm text-gray-900
-                  hover:bg-gray-50
+                  text-left text-sm text-text
+                  hover:bg-bg-hover
+                  focus:bg-bg-hover focus:outline-none
                   transition-colors duration-150
                   cursor-pointer
                   ${
                     selectedLocation?.id === location.id
-                      ? 'bg-gray-100 font-medium'
+                      ? 'bg-bg-muted font-medium'
                       : ''
                   }
                   ${additionalOptionClasses}
@@ -164,21 +221,20 @@ export function LocationDropdown({
             ))
           ) : (
             <div className="px-4 py-6 text-center">
-              <p className="text-sm text-gray-600 mb-2">{emptyMessage}</p>
+              <p className="text-sm text-text-secondary mb-2">{emptyMessage}</p>
               <button
                 type="button"
                 onClick={() => {
                   setIsOpen(false)
                   onNewLocation()
                 }}
-                className="text-sm text-[#FFCE12] hover:underline"
+                className="text-sm text-primary hover:underline"
               >
                 {emptyActionText}
               </button>
             </div>
           )}
-        </div>
-      )}
+      </FloatingDropdown>
 
       <div className="mt-3">
         <TextButton

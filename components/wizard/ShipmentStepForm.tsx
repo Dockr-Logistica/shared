@@ -29,7 +29,7 @@ export function ShipmentStepForm({
   const [isValid] = useAtom(isShipmentStepValidAtom)
   const [validationError] = useAtom(shipmentValidationErrorAtom)
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: string, value: string | string[] | boolean) => {
     setShipmentStep({ [field]: value })
   }
 

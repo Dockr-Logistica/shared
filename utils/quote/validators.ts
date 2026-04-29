@@ -92,7 +92,10 @@ export function validateStep(step: number, formData: Record<string, unknown>): b
 
   const fields = stepFields[step] || [];
   return fields.every((field) => {
-    const value = field.split('.').reduce((obj: any, key) => obj?.[key], formData);
+    const value = field.split('.').reduce<unknown>((obj, key) => {
+      if (!obj || typeof obj !== 'object') return undefined;
+      return (obj as Record<string, unknown>)[key];
+    }, formData);
     return validateField(field, value) === null;
   });
 }

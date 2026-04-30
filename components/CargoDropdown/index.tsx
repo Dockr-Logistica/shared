@@ -7,6 +7,8 @@ import { formatCargoLabel } from '../../types/cargo'
 import { formatCurrency, formatWeight } from '../../utils/quote/formatters'
 import { TextButton } from '../TextButton'
 import { FloatingDropdown } from '../FloatingDropdown'
+import { cn } from '../../utils/cn'
+import { fieldBaseClasses, fieldStateClasses } from '../fieldStyles'
 
 export interface CargoDropdownProps {
   cargos: Cargo[]
@@ -144,23 +146,20 @@ export function CargoDropdown({
         onClick={handleToggle}
         onKeyDown={handleTriggerKeyDown}
         disabled={disabled}
-        className={`
-          w-full h-input-md px-4
-          flex items-center justify-between
-          bg-white
-          border rounded-input
-          transition-all duration-200 ease-in-out
-          ${error ? 'border-error' : 'border-input-border-default hover:border-input-border-hover focus:border-input-border-focus'}
-          ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-          ${isOpen ? 'border-input-border-focus' : ''}
-          ${additionalDropdownClasses}
-        `}
+        className={cn(
+          'w-full h-input-md px-4',
+          'flex items-center justify-between gap-3',
+          fieldBaseClasses,
+          fieldStateClasses({ error: Boolean(error), active: isOpen }),
+          disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
+          additionalDropdownClasses,
+        )}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-controls={isOpen ? dropdownId : undefined}
         aria-labelledby={labelId}
       >
-        <span className="text-text-placeholder text-sm">{placeholder}</span>
+        <span className="min-w-0 flex-1 truncate text-left text-sm text-text-placeholder">{placeholder}</span>
         <ChevronDown
           className={`w-5 h-5 text-text-secondary transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
         />

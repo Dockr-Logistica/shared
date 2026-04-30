@@ -3,6 +3,7 @@
 import { forwardRef, useId } from 'react'
 import type { TextareaHTMLAttributes } from 'react'
 import { cn } from '../utils/cn'
+import { fieldBaseClasses, fieldStateClasses } from './fieldStyles'
 
 export interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string
@@ -51,14 +52,11 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           aria-describedby={describedBy}
           className={cn(
             'w-full px-4 py-3',
-            'border rounded-input',
             'text-sm text-text',
             'placeholder:text-text-placeholder',
-            'transition-all duration-200 ease-in-out',
+            fieldBaseClasses,
             'resize-none',
-            error
-              ? 'border-error focus:border-error'
-              : 'border-input-border-default hover:border-input-border-hover focus:border-input-border-focus',
+            fieldStateClasses({ error: Boolean(error) }),
             disabled && 'opacity-50 cursor-not-allowed bg-input-background-disabled',
             additionalTextAreaClasses,
             className

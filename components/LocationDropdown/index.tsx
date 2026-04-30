@@ -6,6 +6,8 @@ import type { Location } from '../../types/location'
 import { formatLocationLabel } from '../../types/location'
 import { TextButton } from '../TextButton'
 import { FloatingDropdown } from '../FloatingDropdown'
+import { cn } from '../../utils/cn'
+import { fieldBaseClasses, fieldStateClasses } from '../fieldStyles'
 
 export interface LocationDropdownProps {
   locations: Location[]
@@ -142,32 +144,24 @@ export function LocationDropdown({
         onClick={handleToggle}
         onKeyDown={handleTriggerKeyDown}
         disabled={disabled}
-        className={`
-          w-full h-input-md px-4
-          flex items-center justify-between
-          bg-white
-          border rounded-input
-          transition-all duration-200 ease-in-out
-          ${
-            error
-              ? 'border-error'
-              : 'border-input-border-default hover:border-input-border-hover focus:border-input-border-focus'
-          }
-          ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-          ${isOpen ? 'border-input-border-focus' : ''}
-          ${additionalDropdownClasses}
-        `}
+        className={cn(
+          'w-full h-input-md px-4',
+          'flex items-center justify-between gap-3',
+          fieldBaseClasses,
+          fieldStateClasses({ error: Boolean(error), active: isOpen }),
+          disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
+          additionalDropdownClasses,
+        )}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-controls={isOpen ? dropdownId : undefined}
         aria-labelledby={labelId}
       >
         <span
-          className={
-            selectedLocation
-              ? 'text-text text-sm'
-              : 'text-text-placeholder text-sm'
-          }
+          className={cn(
+            'min-w-0 flex-1 truncate text-left text-sm',
+            selectedLocation ? 'text-text' : 'text-text-placeholder',
+          )}
         >
           {selectedLocation
             ? formatLocationLabel(selectedLocation)

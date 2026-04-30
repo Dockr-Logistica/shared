@@ -2,14 +2,15 @@ import { forwardRef, SelectHTMLAttributes, useId } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../utils/cn'
 import { ChevronDown } from 'lucide-react'
+import { fieldBaseClasses, fieldStateClasses } from './fieldStyles'
 
 const selectVariants = cva(
-  'w-full px-4 pr-10 border rounded-input appearance-none transition-all duration-200 text-text bg-white focus:outline-none focus:ring-0',
+  cn('w-full px-4 pr-10 appearance-none text-text', fieldBaseClasses),
   {
     variants: {
       variant: {
-        default: 'border-input-border-default hover:border-input-border-hover focus:border-input-border-focus',
-        error: 'border-error hover:border-error focus:border-error',
+        default: fieldStateClasses(),
+        error: fieldStateClasses({ error: true }),
       },
       size: {
         sm: 'h-input-sm text-sm',

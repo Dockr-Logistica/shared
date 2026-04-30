@@ -10,6 +10,7 @@ import {
 import { Check, ChevronDown } from 'lucide-react'
 import { cn } from '../utils/cn'
 import { FloatingDropdown } from './FloatingDropdown'
+import { fieldBaseClasses, fieldStateClasses } from './fieldStyles'
 
 export interface MultiSelectProps {
   options: string[]
@@ -153,12 +154,9 @@ export function MultiSelect({
         className={cn(
           'w-full h-input-md px-4',
           'flex items-center justify-between',
-          'bg-white',
-          'border rounded-input',
-          'transition-all duration-200 ease-in-out',
-          error ? 'border-error' : 'border-input-border-default hover:border-input-border-hover focus:border-input-border-focus',
+          fieldBaseClasses,
+          fieldStateClasses({ error: Boolean(error), active: isOpen }),
           disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
-          isOpen ? 'border-input-border-focus' : '',
           additionalDropdownClasses
         )}
         aria-expanded={isOpen}
@@ -167,7 +165,7 @@ export function MultiSelect({
         aria-labelledby={label ? labelId : undefined}
         aria-label={label ? undefined : placeholder}
       >
-        <span className={value.length === 0 ? 'text-text-placeholder text-sm' : 'text-text text-sm'}>
+        <span className={cn('min-w-0 flex-1 truncate text-left text-sm', value.length === 0 ? 'text-text-placeholder' : 'text-text')}>
           {displayText}
         </span>
         <ChevronDown

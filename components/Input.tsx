@@ -1,6 +1,7 @@
 import { forwardRef, InputHTMLAttributes, ReactNode, ChangeEvent, useCallback, useId } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../utils/cn'
+import { fieldBaseClasses, fieldStateClasses } from './fieldStyles'
 
 type MaskType = 'cep' | 'phone' | 'cpf' | 'cnpj' | 'date'
 
@@ -24,12 +25,15 @@ const applyMask = (value: string, mask: MaskType): string => {
 }
 
 const inputVariants = cva(
-  'w-full px-4 border rounded-input transition-all duration-200 text-text placeholder:text-text-placeholder focus:outline-none focus:ring-0',
+  cn(
+    'w-full px-4 text-text placeholder:text-text-placeholder',
+    fieldBaseClasses,
+  ),
   {
     variants: {
       variant: {
-        default: 'border-input-border-default hover:border-input-border-hover focus:border-input-border-focus',
-        error: 'border-error focus:border-error hover:border-error',
+        default: fieldStateClasses(),
+        error: fieldStateClasses({ error: true }),
       },
       size: {
         sm: 'h-input-sm text-sm',
